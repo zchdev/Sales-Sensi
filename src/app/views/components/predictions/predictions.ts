@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, DestroyRef } from '@angular/core';
+import { Component, effect, inject, signal, DestroyRef, computed, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PredGraphDaily } from './pred-graph-daily/pred-graph-daily';
 import { PredGraphMonthly } from './pred-graph-monthly/pred-graph-monthly';
@@ -31,18 +31,25 @@ export class Predictions {
   private destroyRef = inject(DestroyRef);
   loading = signal(false);
   constructor() {
-    // this.isVisible = false;
-    this.naviagationService.getProductsDaily().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
-  data=>
-{
-  if (!data || !data.history) return;
-  this.dailyProductsList = data.history; 
-  this.dailyProductsList.forEach(x => {
-    if (x.date) x.date = new Date(x.date); 
-  });
-  this.mapDailytoAnnually();}
-)
-    
+    effect(() => {
+      const dailyData = this.naviagationService.productsListDaily();
+      if (dailyData.length === 0) return;
+
+      untracked(() => {
+        this.dailyProductsList = [...dailyData];
+        this.dailyProductsList.forEach((x) => {
+          if (x.date && !(x.date instanceof Date)) x.date = new Date(x.date);
+        });
+        this.mapDailytoAnnually();
+      });
+    });
+  }
+
+  ngOnInit(): void {
+    this.naviagationService
+      .getProductsDaily()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
   mapDailytoAnnually() {

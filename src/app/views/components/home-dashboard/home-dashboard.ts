@@ -8,7 +8,11 @@ import {
   OnInit,
   runInInjectionContext,
   ViewChild,
+  computed,
+  untracked,
+  DestroyRef,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FilesService } from '../../../core/services/files-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { UploadView } from '../upload-view/upload-view';
@@ -29,7 +33,7 @@ import { HeaderIndicators } from './header-indicators/header-indicators';
   styleUrl: './home-dashboard.css',
 })
 export class HomeDashboard implements OnInit {
-  isVisible = false;
+  isVisible = computed(() => this.naviagationService.productsListDaily().length > 0);
   filesService = inject(FilesService);
   naviagationService = inject(NavigationService);
 
@@ -39,50 +43,44 @@ export class HomeDashboard implements OnInit {
 
   //private environmentInjector = inject(EnvironmentInjector);
 
-  ngOnInit(): void {
-        this.isVisible = false;
-this.naviagationService.getProductsDaily().subscribe(
-  data=>{
-  this.dailyProductsList = data.history;
-  this.dailyProductsList.forEach(x => {
-    if (x.date) x.date = new Date(x.date);
-  });
-
-    let lstDistinct = new Array<Category>();
-      let distinct = this.dailyProductsList.filter(
-        (thing, i, arr) => arr.findIndex((t) => t.code === thing.code) === i,
-      );
-      for (let index = 0; index < distinct.length; index++) {
-        const element = distinct[index];
-        lstDistinct.push({
-          code: element.code,
-          name: element.name,
-          price: element.price ? element.price : 0,
-          qt: this.dailyProductsList
-            .filter((x) => x.code == element.code && x.date?.getFullYear() == 2025)
-            .reduce(
-              (accumulator, currentValue) => accumulator + (currentValue.qt ? currentValue.qt : 0),
-              0,
-            ),
-        });
-      }
-      this.productsList = lstDistinct.sort((a, b) => b.qt - a.qt);
-
-      this.isVisible = true;
- 
-})
-
-}
-
   constructor() {
-    // this.isVisible = false;
-   
-    // runInInjectionContext(this.environmentInjector, () => {
-    //   effect(() => {
-    //     this.productsList = this.naviagationService.getProductsAn()();
-    //     console.log('User set to', this.naviagationService.productsListAnnually());
-    //     this.isVisible = true;
-    //   });
-    // });
+    effect(() => {
+      const dailyData = this.naviagationService.productsListDaily();
+      if (dailyData.length === 0) return;
+
+      untracked(() => {
+        this.dailyProductsList = [...dailyData];
+        this.dailyProductsList.forEach((x) => {
+          if (x.date && !(x.date instanceof Date)) x.date = new Date(x.date);
+        });
+
+        let lstDistinct = new Array<Category>();
+        let distinct = this.dailyProductsList.filter(
+          (thing, i, arr) => arr.findIndex((t) => t.code === thing.code) === i,
+        );
+        for (let index = 0; index < distinct.length; index++) {
+          const element = distinct[index];
+          lstDistinct.push({
+            code: element.code,
+            name: element.name,
+            price: element.price ? element.price : 0,
+            qt: this.dailyProductsList
+              .filter((x) => x.code == element.code && x.date?.getFullYear() == 2025)
+              .reduce(
+                (accumulator, currentValue) => accumulator + (currentValue.qt ? currentValue.qt : 0),
+                0,
+              ),
+          });
+        }
+        this.productsList = lstDistinct.sort((a, b) => b.qt - a.qt);
+      });
+    });
+  }
+
+  ngOnInit(): void {
+    this.naviagationService
+      .getProductsDaily()
+      .pipe(takeUntilDestroyed(inject(DestroyRef)))
+      .subscribe();
   }
 }
