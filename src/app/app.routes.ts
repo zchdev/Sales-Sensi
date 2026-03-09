@@ -9,6 +9,7 @@ import { OverviewDashboard } from './views/components/overview-dashboard/overvie
 import { accessGuardGuard } from './core/guards/access-guard-guard';
 import { Predictions } from './views/components/predictions/predictions';
 import { ErrorLogin } from './views/error-login/error-login';
+import { SenseiView } from './views/components/sensei-view/sensei-view';
 
 export const routes: Routes = [
   {
@@ -42,6 +43,11 @@ export const routes: Routes = [
       {
         path: 'predictions',
         component: Predictions,
+        canActivate: [accessGuardGuard],
+      },
+       {
+        path: 'sensei',
+        component: SenseiView,
         canActivate: [accessGuardGuard],
       },
       {

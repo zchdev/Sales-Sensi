@@ -1,0 +1,20 @@
+<div class="app-container">
+  <div class="vision-box">
+    @if(!voice.isListening){
+    <video  #vPlayer autoplay muted></video>
+    }
+    @if(voice.isListening)  {
+    <div  class="scan-bar"></div>
+    }
+  </div>
+
+  <div class="chat-area">
+    <p>{{ responseText() || 'Click "Start" and show me a chart.' }}</p>
+  </div>
+
+ @if (!voice.isListening) {
+  <button (click)="voice.start()" class="btn-start">Start Session</button>
+} @else {
+  <button (click)="stopSession()" class="btn-stop">Stop</button>
+}
+</div>

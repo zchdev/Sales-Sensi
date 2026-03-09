@@ -10,9 +10,9 @@ import { Top10RevLST } from './top10-rev-lst/top10-rev-lst';
 import { Top10qtLST } from './top10qt-lst/top10qt-lst';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RampupRev } from './rampup-rev/rampup-rev';
-import { AnCategory } from '../../../core/models/an-category';
-import { ServerStorage } from '../../../ai/server-storage';
+import { AnCategory } from '../../../core/models/an-category'; 
 import { CategoryService } from '../../../ai/category-service';
+import { GeminiLiveService } from '../../../ai/gemini-live';
 
 @Component({
   selector: 'app-overview-dashboard',
@@ -31,6 +31,7 @@ import { CategoryService } from '../../../ai/category-service';
 })
 export class OverviewDashboard implements OnInit {
   naviagationService = inject(NavigationService);
+  gemini = inject(GeminiLiveService);
  private catService = inject(CategoryService);
  private destroyRef = inject(DestroyRef);
   isVisible = computed(() => this.naviagationService.productsListDaily().length > 0);
@@ -41,7 +42,7 @@ export class OverviewDashboard implements OnInit {
   price = 0;
   lastUpdate = new Date();
   dailyProductsList: Array<DayCategory> = new Array<DayCategory>();
-  serverStorage = inject(ServerStorage);
+ 
 
   constructor() {
     effect(() => {
@@ -185,7 +186,6 @@ export class OverviewDashboard implements OnInit {
 //     } catch (error) {
 //       console.error('Upload failed:', error);
 //     }
-       
-    console.log('histroy', histroy);
+       this.gemini.history = "Historical Data in JSON format : " + JSON.stringify(histroy);
   }
 }

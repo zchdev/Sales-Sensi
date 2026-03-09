@@ -4,7 +4,7 @@ import { UploadService } from '../../../core/services/upload-service';
 import { NavigationService } from '../../../core/services/navigation-service';
 import { RouterLink } from '@angular/router';
 import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
-import { ServerStorage } from '../../../ai/server-storage';
+
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
 import { env } from '../../../env';
@@ -13,7 +13,7 @@ import { CategoryService } from '../../../ai/category-service';
 @Component({
   selector: 'app-upload-view',
   imports: [RouterLink, TranslatePipe],
-  providers: [ServerStorage ],
+  providers: [ ],
   templateUrl: './upload-view.html',
   styleUrl: './upload-view.css',
 })

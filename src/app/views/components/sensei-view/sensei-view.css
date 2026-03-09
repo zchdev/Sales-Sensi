@@ -1,0 +1,9 @@
+.app-container { text-align: center; display: flex; flex-direction: column; align-items: center; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+.vision-box { position: relative; width: 400px; height: 300px; border-radius: 15px; overflow: hidden; border: 3px solid #007bff; }
+video { width: 100%; height: 100%; object-fit: cover; }
+.scan-bar { position: absolute; top: 0; width: 100%; height: 4px; background: #007bff; animation: scan 2s infinite; box-shadow: 0 0 10px #007bff; }
+@keyframes scan { from { top: 0; } to { top: 100%; } }
+.chat-area { margin: 20px; padding: 20px; background: #f8f9fa; border-radius: 10px; width: 80%; min-height: 100px; text-align: center; }
+button { padding: 15px 40px; border-radius: 30px; border: none; font-size: 1.2rem; cursor: pointer; color: white; }
+.btn-start { background: #28a745; }
+.btn-stop { background: #dc3545; }
