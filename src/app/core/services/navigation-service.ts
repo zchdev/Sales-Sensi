@@ -38,7 +38,7 @@ catService = inject(CategoryService)
   }
 
   //---- Daily data
-  private productsListDaily = signal<Array<DayCategory>>(new Array<DayCategory>());
+  productsListDaily = signal<Array<DayCategory>>(new Array<DayCategory>());
 
   getProductsDaily(): Observable<any> {
    

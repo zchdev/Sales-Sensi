@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, DestroyRef } from '@angular/core';
+import { Component, effect, inject, OnInit, DestroyRef, computed, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationService } from '../../../core/services/navigation-service';
 import { DayCategory } from '../../../core/models/day-category';
@@ -33,7 +33,7 @@ export class OverviewDashboard implements OnInit {
   naviagationService = inject(NavigationService);
  private catService = inject(CategoryService);
  private destroyRef = inject(DestroyRef);
-isVisible = false
+  isVisible = computed(() => this.naviagationService.productsListDaily().length > 0);
   productsListQT: Array<AllCategory> = new Array<AllCategory>();
   productsListREV: Array<AllCategory> = new Array<AllCategory>();
   revenue = 0;
@@ -44,85 +44,64 @@ isVisible = false
   serverStorage = inject(ServerStorage);
 
   constructor() {
-
-     
-  
     effect(() => {
-      
+      const dailyData = this.naviagationService.productsListDaily();
+      if (dailyData.length === 0) return;
 
-     
+      untracked(() => {
+        this.dailyProductsList = [...dailyData];
+        this.dailyProductsList.forEach(x => {
+          if (x.date && !(x.date instanceof Date)) x.date = new Date(x.date);
+        });
+
+        this.mapDailytoAnnually();
+        this.lastUpdate = this.dailyProductsList[this.dailyProductsList.length - 1].date!;
+
+        let lstDistinct = new Array<AllCategory>();
+        let distinct = this.dailyProductsList.filter(
+          (thing, i, arr) => arr.findIndex((t) => t.code === thing.code) === i,
+        );
+        for (let index = 0; index < distinct.length; index++) {
+          const element = distinct[index];
+          lstDistinct.push({
+            code: element.code,
+            name: element.name,
+            price: element.price ? element.price : 0,
+            qt: this.dailyProductsList
+              .filter((x) => x.code == element.code && x.date?.getFullYear() == 2025)
+              .reduce(
+                (accumulator, currentValue) => accumulator + (currentValue.qt ? currentValue.qt : 0),
+                0,
+              ),
+            revenue:
+              this.dailyProductsList
+                .filter((x) => x.code == element.code && x.date?.getFullYear() == 2025)
+                .reduce(
+                  (accumulator, currentValue) =>
+                    accumulator + (currentValue.qt ? currentValue.qt : 0),
+                  0,
+                ) * element.price,
+          });
+        }
+        this.productsListQT = lstDistinct.sort((a, b) => b.qt - a.qt);
+        this.productsListREV = [...lstDistinct].sort((a, b) => b.revenue - a.revenue);
+        this.revenue = this.productsListREV.reduce(
+          (accumulator, currentValue) =>
+            accumulator + (currentValue.revenue ? currentValue.revenue : 0),
+          0,
+        );
+        this.qt = this.productsListQT.reduce(
+          (accumulator, currentValue) => accumulator + (currentValue.qt ? currentValue.qt : 0),
+          0,
+        );
+      });
     });
   }
   
   ngOnInit(): void {
-        this.isVisible = false;
-this.naviagationService.getProductsDaily().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
-  data=>
-{
-  if (!data || !data.history) {
-    this.isVisible = true;
-    return;
-  }
-  this.dailyProductsList = data.history;
-  this.dailyProductsList.forEach(x => {
-    if (x.date) x.date = new Date(x.date);
-  });
-  console.log(('data'),data.history)
-     try {
-      // Using Option A for better data structure
-      //  this.catService.saveFullHistory(this.dailyProductsList);
-    
-      console.log('Database synchronized successfully!');
-    } catch (error) {
-      console.error('Upload failed:', error);
-    }
-
-
-      this.mapDailytoAnnually();
-      if (this.dailyProductsList.length > 0) {
-        this.lastUpdate = this.dailyProductsList[this.dailyProductsList.length - 1].date!;
-      }
-
-      let lstDistinct = new Array<AllCategory>();
-      let distinct = this.dailyProductsList.filter(
-        (thing, i, arr) => arr.findIndex((t) => t.code === thing.code) === i,
-      );
-      for (let index = 0; index < distinct.length; index++) {
-        const element = distinct[index];
-        lstDistinct.push({
-          code: element.code,
-          name: element.name,
-          price: element.price ? element.price : 0,
-          qt: this.dailyProductsList
-            .filter((x) => x.code == element.code && x.date?.getFullYear() == 2025)
-            .reduce(
-              (accumulator, currentValue) => accumulator + (currentValue.qt ? currentValue.qt : 0),
-              0,
-            ),
-          revenue:
-            this.dailyProductsList
-              .filter((x) => x.code == element.code && x.date?.getFullYear() == 2025)
-              .reduce(
-                (accumulator, currentValue) =>
-                  accumulator + (currentValue.qt ? currentValue.qt : 0),
-                0,
-              ) * element.price,
-        });
-      }
-      this.productsListQT = lstDistinct.sort((a, b) => b.qt - a.qt);
-      this.productsListREV = lstDistinct.sort((a, b) => b.revenue - a.revenue);
-      this.revenue = this.productsListREV.reduce(
-        (accumulator, currentValue) =>
-          accumulator + (currentValue.revenue ? currentValue.revenue : 0),
-        0,
-      );
-      this.qt = this.productsListQT.reduce(
-        (accumulator, currentValue) => accumulator + (currentValue.qt ? currentValue.qt : 0),
-        0,
-      );
-   this.isVisible = true;
-}
-)
+    this.naviagationService.getProductsDaily()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
   mapDailytoAnnually() {
     // get AN category
