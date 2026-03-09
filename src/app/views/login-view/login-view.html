@@ -1,0 +1,26 @@
+<div class="contain-form text-center">
+  <img class="mb-4" src="login.png" alt="" width="372" />
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+    <div class="mb-2">
+      <input type="email" class="form-control" placeholder="" formControlName="email" />
+      @if (form.get('email')?.touched && form.get('email')?.errors) {
+        <div class="error-message">Error.</div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <input type="password" class="form-control" placeholder="" formControlName="password" />
+      @if ((form.get('password')?.touched && form.get('password')?.errors) || this.error) {
+        <div class="error-message">Error.</div>
+      }
+    </div>
+
+    <div>
+      <button class="btn btn-lg btn-primary btn-block w-100" type="submit">Submit</button>
+      <!-- <button (click)="guestLogin()">Guest Login</button> -->
+    </div>
+    <!-- <button (click)="onGoogleSignIn()">
+      <p>Login with Google</p>
+    </button> -->
+  </form>
+</div>

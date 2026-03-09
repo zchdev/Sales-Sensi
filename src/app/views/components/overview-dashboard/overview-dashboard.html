@@ -1,0 +1,53 @@
+@if (isVisible){
+<div  class="p-3">
+  <div class="d-flex justify-content-between">
+    <div class="col-lg-2 col-sm-12">
+      <!-- <select class="form-select" aria-label="Default select example">
+        <option selected>2025</option>
+        <option value="1">2024</option>
+        <option value="2">2023</option>
+        <option value="3">2022</option>
+      </select> -->
+    </div>
+    <div class="accent-foreground" style="line-height: 36px">
+      <p>last update :{{ lastUpdate | date: 'dd-MM-yyyy' }}</p>
+    </div>
+  </div>
+
+  <div class="elem-container justify-content-center">
+    <div class="col-lg-2 col-sm-12">
+      <div class="card p-3">
+        <div class="lbl-name accent-foreground">{{ 'app.revenue' | translate }}</div>
+        <div class="lbl-value accent-foreground-2">{{ revenue | currency: 'EUR' }}</div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-12">
+      <div class="card p-3">
+        <div class="lbl-name accent-foreground">{{ 'app.sold' | translate }}</div>
+        <div class="lbl-value accent-foreground-2">{{ qt }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="elem-container justify-content-center mt-3">
+    <app-graph-per-day-qt
+      class="col-lg-6 col-sm-12 card p-3 mb-2"
+      [data]="dailyProductsList"
+    ></app-graph-per-day-qt>
+    <app-graph-per-day-rev
+      class="col-lg-6 col-sm-12 card p-3 mb-2"
+      [data]="dailyProductsList"
+    ></app-graph-per-day-rev>
+  </div>
+  <!-- <div class="col-12 card p-3 mb-2">
+    <app-rampup-rev [data]="dailyProductsList"></app-rampup-rev>
+  </div> -->
+  <div class="elem-container justify-content-center mt-3">
+    <app-top10qt-lst class="col-lg-6 col-sm-12" [data]="productsListQT"></app-top10qt-lst>
+    <app-top10-rev-lst class="col-lg-6 col-sm-12" [data]="dailyProductsList"></app-top10-rev-lst>
+  </div>
+</div>
+}
+
+@if (!isVisible){
+  loading
+}

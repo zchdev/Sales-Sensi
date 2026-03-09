@@ -1,0 +1,20 @@
+<div class="p-3">
+  @if (loading()) {
+    <div>loading</div>
+  } @else {
+    <div class="d-flex justify-content-between mb-3">
+      <app-pred-graph-indicators [pred]="pred" style="width: 100%"></app-pred-graph-indicators>
+    </div>
+    <div class="elem-container">
+      <app-pred-graph-monthly
+        class="col-lg-6 col-sm-12 card p-3 mb-2"
+        [pred]="pred"
+      ></app-pred-graph-monthly>
+      <app-pred-graph-daily
+        class="col-lg-6 col-sm-12 card p-3 mb-2"
+        [pred]="pred"
+      ></app-pred-graph-daily>
+    </div>
+    <app-pred-tips class="col-12 card p-3 mb-2" [pred]="pred"></app-pred-tips>
+  }
+</div>

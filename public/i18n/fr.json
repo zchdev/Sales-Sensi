@@ -1,0 +1,19 @@
+{
+  "app": {
+    "upload": "Chargez vos données à partir de vos documents csv",
+    "dailyupload": "Données par jour",
+    "genupload": "Générer",
+    "errorupload": "Veuillez charger vos données ou contactez le support",
+    "loaddata": "Charger les données",
+    "sold": "Vendu",
+    "revenue": "CA",
+    "dailysold": "Ventes par jour",
+    "dailyunits": "Unités par jour",
+    "dailyrev": "Revenus par jour",
+    "monthlysold": "Ventes par mois",
+    "price": "prix",
+    "top10": "Top ventes",
+    "last10": "Dernières ventes",
+    "nextdays": "prochaine semaine"
+  }
+}

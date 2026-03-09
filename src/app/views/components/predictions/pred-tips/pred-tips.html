@@ -1,0 +1,9 @@
+<div class="text-center mb-3">{{ 'app.nextdays' | translate }}</div>
+<div class="contain">
+  @for (item of nextDays; track $index) {
+    <div class="tile">
+      <div class="badge-pred">{{ item.value }}€</div>
+      <div>{{ item.name }}</div>
+    </div>
+  }
+</div>

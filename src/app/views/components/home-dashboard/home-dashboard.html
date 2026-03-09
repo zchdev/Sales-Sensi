@@ -1,0 +1,32 @@
+@if(isVisible){
+<div class="p-3">
+  @for (item of productsList; track $index) {
+    <div class="card col-12 mt-3">
+      <div class="mt-2 mb-2 text-center">
+        <p class="lbl-name accent-foreground-2">{{ item.name }}</p>
+        <app-header-indicators [code]="item.code"></app-header-indicators>
+      </div>
+    </div>
+    <div class="graphs-container">
+      <div class="card col-lg-6 col-12">
+        <div class="card-body">
+          <div class="d-flex col-12">
+            <app-graph-sold style="margin: auto" [code]="item.code"></app-graph-sold>
+          </div>
+        </div>
+      </div>
+      <div class="card col-lg-6 col-12" style="display: flex; justify-content: center">
+        <app-day-week-sold [code]="item.code"></app-day-week-sold>
+      </div>
+    </div>
+    <div class="card col-12 mb-3">
+      <app-chart-sold [code]="item.code"></app-chart-sold>
+    </div>
+  } @empty {
+    <app-error-view></app-error-view>
+  }
+</div>
+}
+@if(!isVisible){
+  <div>Loading...</div>
+}

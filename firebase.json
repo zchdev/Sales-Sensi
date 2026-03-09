@@ -1,0 +1,15 @@
+{
+  "hosting": {
+    "public": "dist/browser",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/browser/index.html"
+      }
+    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "frameworksBackend": {
+      "region": "us-central1"
+    }
+  }
+}

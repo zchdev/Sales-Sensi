@@ -1,0 +1,21 @@
+@if (dailyProductsList.length > 0) {
+<div class="accent-foreground-2 mb-2 text-center">{{ 'app.monthlysold' | translate }}</div>
+<table class="table table-borderless text-center">
+  <tbody>
+    <tr>
+      @for (item of soldbyMonthcolor; track $index) {
+        <td>
+          <tr>
+            <td>
+              <div class="point-container" [style.background-color]="item.color">{{ item.n }}</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="accent-foreground">{{ months[$index] }}</td>
+          </tr>
+        </td>
+      }
+    </tr>
+  </tbody>
+</table>
+}

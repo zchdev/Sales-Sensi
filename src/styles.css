@@ -1,1 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
+
+.accent-foreground {
+  color: #006255 !important;
+}
+
+.accent-foreground-2 {
+  color: #2f8bec !important;
+}
+
+.accent-foreground-3 {
+  color: #d050ed !important;
+}
+
+.accent-foreground-4 {
+  color: #9f06f4 !important ;
+}
+
+.bg-accent {
+  background-color: #006255 !important;
+}
+
+.bg-accent-2 {
+  background-color: #2f8bec !important;
+}
+
+.bg-accent-3 {
+  background-color: #d050ed !important;
+}
+
+.bg-accent-4 {
+  background-color: #9f06f4 !important;
+}
+
+.bg-nav-p {
+  background-color: #ecf2f1fc;
+}

@@ -1,0 +1,14 @@
+<div class="d-flex text-center justify-content-center bg-white">
+  <div class="p-2">
+    <img #box class="w-50" src="nodata.png" />
+
+    <div class="large grid centered square-grid">
+      <div class="text-xl accent-foreground">{{ 'app.errorupload' | translate }}</div>
+    </div>
+    <div class="col-auto mt-3">
+      <button class="btn btn-primary bg-accent-2" routerLink="/app/upload">
+        {{ 'app.loaddata' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

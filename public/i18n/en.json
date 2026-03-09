@@ -1,0 +1,19 @@
+{
+  "app": {
+    "upload": "Upload yout data from a csv file",
+    "dailyupload": "Daily Data",
+    "genupload": "Generate",
+    "errorupload": "Load your data or contact the support",
+    "loaddata": "Load data",
+    "sold": "Units",
+    "revenue": "Revenue",
+    "dailysold": "Sales per day",
+    "dailyunits": "Revenus per month",
+    "dailyrev": "Revenus per day",
+    "monthlysold": "Sales per month",
+    "price": "price",
+    "top10": "Top 10 Products",
+    "last10": "Last 10 Sales",
+    "nextdays": "next 7 days"
+  }
+}

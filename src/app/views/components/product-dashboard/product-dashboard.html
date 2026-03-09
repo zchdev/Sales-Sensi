@@ -1,0 +1,10 @@
+@if (currentProduct) {
+  <div class="card col-lg-6 col-12">
+    <div class="card-body">
+      <p>{{ currentProduct.name }}</p>
+      <div>
+        <app-graph-sold [code]="currentProduct.code"></app-graph-sold>
+      </div>
+    </div>
+  </div>
+}

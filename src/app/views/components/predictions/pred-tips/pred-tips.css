@@ -1,0 +1,16 @@
+.tile {
+  text-align: center;
+}
+
+.contain {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.badge-pred {
+  padding: 2px 10px;
+  background-color: #c92fec;
+  color: white;
+  border-radius: 4px;
+}

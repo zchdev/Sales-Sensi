@@ -1,0 +1,15 @@
+@if (daysOfWeek.length > 0) {
+<div class="text-center">
+  <div class="accent-foreground-2 mb-2">{{ 'app.dailysold' | translate }}</div>
+  <div class="days-graph">
+    @for (item of daysOfWeek; track $index) {
+      <div>
+        <div class="square-day" [style.background-color]="item.color">
+          {{ item.n ? item.n : 0 }}
+        </div>
+        <div class="accent-foreground">{{ item.lbl | slice: 0 : 1 }}</div>
+      </div>
+    }
+  </div>
+</div>
+}

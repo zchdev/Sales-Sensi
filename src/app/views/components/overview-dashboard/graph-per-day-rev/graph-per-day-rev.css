@@ -1,0 +1,34 @@
+.days-graph {
+  display: flex;
+  min-width: 0;
+  justify-content: center;
+  gap: 6px;
+}
+
+.square-day {
+  height: 3em;
+
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.table {
+  table-layout: fixed !important;
+  width: 100% !important;
+  margin: auto;
+}
+
+thead,
+tbody {
+  display: block;
+}
+
+tbody {
+  height: 100px; /* Just for the demo          */
+  overflow-y: auto; /* Trigger vertical scroll    */
+  overflow-x: auto; /* Hide the horizontal scroll */
+}

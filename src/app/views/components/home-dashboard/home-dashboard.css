@@ -1,0 +1,19 @@
+#animation .text-xl {
+  font-size: 1.5rem;
+  color: currentColor;
+  letter-spacing: 0.06em;
+}
+
+.lbl-name {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto 25px;
+  border-radius: 4px;
+  padding: 2px 14px;
+}
+
+.graphs-container {
+  display: flex;
+  flex-wrap: wrap;
+}

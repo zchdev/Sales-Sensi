@@ -1,0 +1,35 @@
+<div class="text-center accent-foreground-2 mb-3">{{ 'app.last10' | translate }}</div>
+@if (data.length > 0) {
+  @for (item of data; track $index) {
+    <div class="card p-3 mb-2">
+      <div class="d-flex text-center">
+        <div class="mr-3 bd-rank">
+          {{ $index + 1 }}
+        </div>
+        <div class="accent-foreground ml-2">
+          {{ item.name }}
+        </div>
+      </div>
+      <div class="d-flex justify-content-evenly">
+        <div class="mr-3">
+          <div class="lbl-name">{{ 'app.sold' | translate }}</div>
+          <div class="lbl-value accent-foreground-2">
+            {{ item.qt }}
+          </div>
+        </div>
+        <div>
+          <div class="lbl-name">{{ 'app.revenue' | translate }}</div>
+          <div class="lbl-value accent-foreground-2">
+            {{ item.price | currency: 'EUR' }}
+          </div>
+        </div>
+        <div>
+          <div class="lbl-name">{{ 'app.revenue' | translate }}</div>
+          <div class="lbl-value accent-foreground-2">
+            {{ item.date | date: 'dd-MM-yyyy' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+}

@@ -1,0 +1,18 @@
+@if (indYear) {
+<div class="indicators-container">
+  <div class="text-center">
+    <div class="accent-foreground lbl-value text-center" style="font-size: 1.2rem">
+      {{ indYear.revenue | currency: 'EUR' }}
+    </div>
+    <div class="lbl-name">{{ 'app.revenue' | translate }}</div>
+  </div>
+  <div class="text-center">
+    <div class="accent-foreground lbl-value text-center">{{ indYear.n }}</div>
+    <div class="lbl-name">{{ 'app.sold' | translate }}</div>
+  </div>
+  <div class="text-center">
+    <div class="accent-foreground lbl-value text-center">{{ indYear.price }}</div>
+    <div class="lbl-name">{{ 'app.price' | translate }}</div>
+  </div>
+</div>
+}
