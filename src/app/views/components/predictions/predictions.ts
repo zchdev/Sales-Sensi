@@ -1,4 +1,5 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PredGraphDaily } from './pred-graph-daily/pred-graph-daily';
 import { PredGraphMonthly } from './pred-graph-monthly/pred-graph-monthly';
 import { PredGraphIndicators } from './pred-graph-indicators/pred-graph-indicators';
@@ -27,13 +28,15 @@ export class Predictions {
   pred: AnCategory = new AnCategory();
 
   private geminiService = inject(GeminiService);
+  private destroyRef = inject(DestroyRef);
   loading = signal(false);
   constructor() {
     // this.isVisible = false;
-    this.naviagationService.getProductsDaily().subscribe(
+    this.naviagationService.getProductsDaily().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
   data=>
-
-{this.dailyProductsList = data.history; 
+{
+  if (!data || !data.history) return;
+  this.dailyProductsList = data.history; 
   this.dailyProductsList.forEach(x => {
     if (x.date) x.date = new Date(x.date); 
   });

@@ -1,4 +1,5 @@
-import { Component, effect, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, effect, inject, Input, OnChanges, OnInit, SimpleChanges, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import moment from 'moment';
 import { TranslatePipe, TranslateService, _ } from '@ngx-translate/core';
 import { NavigationService } from '../../../../core/services/navigation-service';
@@ -15,6 +16,7 @@ export class GraphSold implements OnChanges,OnInit {
 
   private translateService = inject(TranslateService);
   naviagationService = inject(NavigationService);
+  private destroyRef = inject(DestroyRef);
   dailyProductsList: Array<DayCategory> = new Array<DayCategory>();
 
   soldbyMonthcolor: Array<{ month: number; n: number; color: string }> = new Array<{
@@ -51,9 +53,10 @@ export class GraphSold implements OnChanges,OnInit {
           }
   ngOnInit(): void {
     this.naviagationService
-        .getProductsDaily().subscribe(
+        .getProductsDaily().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
           data=>
           {
+            if (!data || !data.history) return;
  this.dailyProductsList = 
         data.history.filter((x:DayCategory) => x.code == this.code && x.date?.getFullYear() == 2025);
 

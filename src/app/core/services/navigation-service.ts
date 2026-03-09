@@ -42,12 +42,14 @@ catService = inject(CategoryService)
 
   getProductsDaily(): Observable<any> {
    
-    return  this.catService.getAllHistory().pipe(
+    return this.catService.getAllHistory().pipe(
       map((data) => {
-        this.setProductsDaily(data.history);
+        if (data && data.history) {
+          this.setProductsDaily(data.history);
+        }
         return data;
-      })
-    )
+      }),
+    );
   }
 
   setProductsDaily(productsList: Array<DayCategory>) {

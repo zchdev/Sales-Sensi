@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, effect, inject, Input } from '@angular/core';
+import { AfterViewInit, Component, effect, inject, Input, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AmChart, AmChartsModule, AmChartsService } from '@amcharts/amcharts3-angular';
 import { DayCategory } from '../../../../core/models/day-category';
 import { NavigationService } from '../../../../core/services/navigation-service';
@@ -18,6 +19,7 @@ export class ChartSold implements AfterViewInit {
   AmCharts = inject(AmChartsService);
   naviagationService = inject(NavigationService);
   private translateService = inject(TranslateService);
+  private destroyRef = inject(DestroyRef);
 
   dailyProductsList: Array<DayCategory> = new Array<DayCategory>();
 
@@ -36,8 +38,10 @@ export class ChartSold implements AfterViewInit {
   constructor() {
     // this.isVisible = false;
      this.naviagationService
-        .getProductsDaily().subscribe(
-          data=>{this.dailyProductsList = data.history;
+        .getProductsDaily().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
+          data=>{
+            if (!data || !data.history) return;
+            this.dailyProductsList = data.history;
             this.dailyProductsList.forEach(x => {
               if (x.date) x.date = new Date(x.date);
             });

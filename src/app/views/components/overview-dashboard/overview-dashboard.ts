@@ -1,4 +1,5 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationService } from '../../../core/services/navigation-service';
 import { DayCategory } from '../../../core/models/day-category';
 import { AllCategory } from '../../../core/models/all-category';
@@ -31,6 +32,7 @@ import { CategoryService } from '../../../ai/category-service';
 export class OverviewDashboard implements OnInit {
   naviagationService = inject(NavigationService);
  private catService = inject(CategoryService);
+ private destroyRef = inject(DestroyRef);
 isVisible = false
   productsListQT: Array<AllCategory> = new Array<AllCategory>();
   productsListREV: Array<AllCategory> = new Array<AllCategory>();
@@ -51,11 +53,17 @@ isVisible = false
      
     });
   }
+  
   ngOnInit(): void {
         this.isVisible = false;
-this.naviagationService.getProductsDaily().subscribe(
+this.naviagationService.getProductsDaily().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
   data=>
-{this.dailyProductsList = data.history;
+{
+  if (!data || !data.history) {
+    this.isVisible = true;
+    return;
+  }
+  this.dailyProductsList = data.history;
   this.dailyProductsList.forEach(x => {
     if (x.date) x.date = new Date(x.date);
   });
@@ -71,7 +79,9 @@ this.naviagationService.getProductsDaily().subscribe(
 
 
       this.mapDailytoAnnually();
-      this.lastUpdate = this.dailyProductsList[this.dailyProductsList.length - 1].date!;
+      if (this.dailyProductsList.length > 0) {
+        this.lastUpdate = this.dailyProductsList[this.dailyProductsList.length - 1].date!;
+      }
 
       let lstDistinct = new Array<AllCategory>();
       let distinct = this.dailyProductsList.filter(

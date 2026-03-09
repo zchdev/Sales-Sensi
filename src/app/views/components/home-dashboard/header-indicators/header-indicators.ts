@@ -1,4 +1,5 @@
-import { Component, effect, inject, Input } from '@angular/core';
+import { Component, effect, inject, Input, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DayCategory } from '../../../../core/models/day-category';
 import { NavigationService } from '../../../../core/services/navigation-service';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -14,14 +15,17 @@ export class HeaderIndicators {
   @Input() code!: string;
 
   naviagationService = inject(NavigationService);
+  private destroyRef = inject(DestroyRef);
 
   indYear = { n: 0, price: 0, revenue: 0 };
   dailyProductsList: Array<DayCategory> = new Array<DayCategory>();
 
   constructor() {
-    this.naviagationService.getProductsDaily().subscribe(
+    this.naviagationService.getProductsDaily().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
   data=>
-{this.dailyProductsList = data.history.filter((x:DayCategory) => x.code == this.code && x.date?.getFullYear() == 2025);
+{
+  if (!data || !data.history) return;
+  this.dailyProductsList = data.history.filter((x:DayCategory) => x.code == this.code && x.date?.getFullYear() == 2025);
       this.indYear.n = this.dailyProductsList.reduce(
         (accumulator, currentValue) => accumulator + (currentValue.qt ? currentValue.qt : 0),
         0,
