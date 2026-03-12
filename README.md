@@ -22,11 +22,11 @@ Follow these steps to set up and use Sales Sensei:
 Open your terminal and run:
 
 ```bash
-npm install
+npm install --force
 ```
 
 > [!NOTE]
-> While the legacy command was `ng install`, `npm install` is the standard for modern projects.
+> please `npm install --force` to force install dependencies.
 
 ### STEP 2: Configure Environment
 
@@ -47,7 +47,7 @@ To start a local development server, run:
 ng serve
 ```
 
-The dashboard will be available at `http://localhost:4200/`.
+The dashboard will be available at `http://localhost:4200/`. please open your upd to date CHROME browser and navigate to `http://localhost:4200/`.
 
 ### STEP 5: Login
 
