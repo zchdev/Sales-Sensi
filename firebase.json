@@ -1,10 +1,10 @@
 {
   "hosting": {
-    "public": "dist/browser",
+    "public": "dist/sales-sensei/browser",
     "rewrites": [
       {
         "source": "**",
-        "destination": "/browser/index.html"
+        "destination": "sales-sensei/browser/index.html"
       }
     ],
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],

@@ -15,6 +15,9 @@
  @if (!voice.isListening) {
   <button (click)="voice.start()" class="btn-start">Start Session</button>
 } @else {
+  <div class="button-group">
+  <button (click)="bargeIn()" class="btn-barge">Barge In</button>
   <button (click)="stopSession()" class="btn-stop">Stop</button>
+  </div>
 }
 </div>

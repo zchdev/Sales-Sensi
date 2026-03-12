@@ -36,6 +36,7 @@ export class SenseiView implements OnInit {
       this.voice.recognition.onspeechstart = () => {
         if (this.isAITalking) {
           window.speechSynthesis.cancel();
+           this.voice.stop();
         }
         this.voice.interrupt();
         this.isAITalking = false;
@@ -48,6 +49,15 @@ export class SenseiView implements OnInit {
     this.responseText.set('');
     this.isAITalking = false;
     window.speechSynthesis.cancel();
+    this.voice.isListening=false;
+  }
+
+  bargeIn() {
+    window.speechSynthesis.cancel();
+    this.isAITalking = false;
+    if (!this.voice.isListening) {
+      this.voice.start();
+    }
   }
 
   async handleUserQuery(text: string) {
@@ -57,10 +67,13 @@ export class SenseiView implements OnInit {
     
     let fullText = "";
     for await (const chunk of result.stream) {
+      if (!this.voice.isListening) break;
       fullText += chunk.text();
       this.responseText.set(fullText);
     }
-    this.speak(fullText);
+    if (this.voice.isListening) {
+      this.speak(fullText);
+    }
   }
 
   speak(text: string) {

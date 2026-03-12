@@ -40,7 +40,7 @@ export class VoiceRecognitionService {
     this.isListening = false; 
     window.speechSynthesis.cancel();
     if (this.recognition) {
-      this.recognition.stop(); 
+      this.recognition.abort(); 
     }
   }
 
