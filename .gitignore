@@ -12,7 +12,8 @@ npm-debug.log
 yarn-error.log
 /package-lock.json
 package-lock.json
-env.ts
+# env.ts
+env2.ts
 
 # IDEs and editors
 .idea/
